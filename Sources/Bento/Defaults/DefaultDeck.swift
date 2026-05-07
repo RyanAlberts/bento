@@ -20,11 +20,16 @@ enum DefaultDeck {
                 label: "Snap",
                 symbol: "camera.viewfinder",
                 tint: .neutral,
-                // -i interactive crosshair, -c to clipboard. Avoids writing to Desktop
-                // (which would trip Tahoe's "access Desktop folder" TCC prompt) and is
-                // instant — no Screenshot.app launch lag. Paste with ⌘V.
-                action: .shell("screencapture -ic"),
-                info: "Drag a region with the crosshair — your screenshot lands on the clipboard. Paste with ⌘V into any app."
+                // We hand off to macOS Screenshot.app instead of `screencapture -ic`.
+                // `screencapture` itself requires Screen Recording permission, and on
+                // every Bento rebuild the binary signature changes so TCC re-prompts
+                // even when the user has already toggled the setting on. Screenshot.app
+                // has its own permanent Screen Recording grant on most Macs (granted
+                // the first time the user ever pressed ⌘⇧5), so opening it is the
+                // permission-free path. Slight launch lag (~200ms first time) is the
+                // cost of zero re-prompts.
+                action: .shell("open -a Screenshot"),
+                info: "Open macOS Screenshot — pick region, window, or full screen. Press Esc to dismiss."
             ),
             Tile(
                 label: "Coffee",
