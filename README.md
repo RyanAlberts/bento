@@ -1,6 +1,6 @@
 # Bento
 
-Create custom, recorded sequences of actions — such as keystrokes, mouse clicks, or application launches — assigned to a single button for automated execution.
+Create custom, recorded sequences of actions — such as keystrokes, mouse clicks, or application launches — assigned to a single button for automated execution. All from a macOS desktop App. Free to install and use with AI. 
 > Press `⌃⌘B` from anywhere — eight tiles appear. Click one — magic happens.
 
 ![Bento screenshot](docs/hero.png)
