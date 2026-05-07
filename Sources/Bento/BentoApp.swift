@@ -279,6 +279,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { note in
+            // Ack round-trip (per /autoplan Eng F6): if the CLI provided a replyTo
+            // UUID, post bento.pressTile.ack.<UUID> back so the CLI knows the app
+            // received the request. This is the IPC-layer ack; the press itself
+            // executes asynchronously below. Without this, Hammerspoon and other
+            // integrations silently no-op when the app is mid-update or mid-quit.
+            if let replyTo = note.userInfo?["replyTo"] as? String {
+                let ackName = Notification.Name("bento.pressTile.ack.\(replyTo)")
+                DistributedNotificationCenter.default().post(name: ackName, object: nil)
+            }
             if let needle = note.userInfo?["needle"] as? String {
                 Task { @MainActor in BentoURLHandler.press(needle: needle) }
             }
