@@ -16,12 +16,12 @@ npm install -g bento
 
 That installs `Bento.app` to `/Applications` and a `bento` CLI to `/usr/local/bin/bento`. The postinstall strips the quarantine flag so the ad-hoc-signed binary launches without the "from an unidentified developer" prompt.
 
-**Or download the DMG** from the [Releases page](https://github.com/ryan-alberts/bento/releases/latest), drag to Applications, then right-click → Open the first time.
+**Or download the DMG** from the [Releases page](https://github.com/RyanAlberts/bento/releases/latest), drag to Applications, then right-click → Open the first time.
 
 **Or build from source** (requires Xcode Command Line Tools, ~1 GB; or full Xcode for the test target):
 
 ```bash
-git clone https://github.com/ryan-alberts/bento.git
+git clone https://github.com/RyanAlberts/bento.git
 cd bento
 ./scripts/build-app.sh release
 open build/Bento.app
@@ -36,16 +36,19 @@ It is deliberately a tiny app. One window, one editor sheet, one CLI binary, one
 
 ## What ships in the default deck
 
-| Tile       | What it does                                                                   | Permission |
-|------------|--------------------------------------------------------------------------------|------------|
-| **Dark**   | Toggle macOS Dark Mode on/off.                                                 | Asks once for Automation (System Events) |
-| **Lock**   | Lock the screen and require your password on wake.                             | None |
-| **Mic**    | Toggle the system mic mute. Tile glows red when muted. Live state.             | Asks once for Automation (System Events) |
-| **Coffee** | Stop your Mac from sleeping for 60 minutes. Live ring traces the countdown.    | None |
-| **Snap**   | Interactive screenshot — drag a region, PNG saves to your Desktop.             | None |
-| **Notes**  | Open the macOS Notes app. (Edit to point at your favorite note app.)           | None |
-| **Sleep**  | Put your displays to sleep right now (doesn't sleep the whole Mac).            | None |
-| **Focus**  | 25-minute focus session — Mac stays awake, sound + notification when done.     | None |
+The grid is laid out so keyboard arrow navigation flows intuitively from the top-left:
+
+| Position | Tile       | What it does                                                                          | Permission |
+|----------|------------|---------------------------------------------------------------------------------------|------------|
+| 1, 1     | **AI**     | Open Google AI Mode in your default browser. Always lit accent — your "go" tile.      | None |
+| 1, 2     | **Snap**   | Open macOS Screenshot — pick region, window, or full screen.                          | None (uses Screenshot.app's existing grant) |
+| 1, 3     | **Coffee** | Stop your Mac from sleeping for 60 minutes. Live ring traces the countdown.           | None |
+| 1, 4     | **Focus**  | 25-minute focus session — Mac stays awake, plays a chime when done.                   | None |
+| 2, 1     | **Notes**  | Open the macOS Notes app. (Edit to point at your favorite note app.)                  | None |
+| 2, 2     | **Mic**    | Toggle the system mic mute. Tile glows red when muted. Live state.                    | Asks once for Automation (System Events) |
+| 2, 3     | **Dark**   | Toggle macOS Dark Mode on/off.                                                        | Asks once for Automation (System Events) |
+| 2, 4     | **Sleep**  | Put your displays to sleep right now (doesn't sleep the whole Mac).                   | None |
+| 3, 1     | **+**      | Add a new tile.                                                                       | None |
 
 Hover any tile in the app to see this same one-line description. Open **Help → Bento Help** in the menu bar for the full tour.
 

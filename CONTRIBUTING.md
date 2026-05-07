@@ -11,7 +11,7 @@ Thanks for considering it. Bento is a deliberately small app — that's the whol
 ## Build + run
 
 ```bash
-git clone https://github.com/ryan-alberts/bento.git
+git clone https://github.com/RyanAlberts/bento.git
 cd bento
 ./scripts/build-app.sh debug
 open build/Bento.app

@@ -39,7 +39,7 @@ That installs `Bento.app` to `/Applications` and a `bento` command on your PATH.
 **Or build from source:**
 
 ```
-git clone https://github.com/ryan-alberts/bento.git
+git clone https://github.com/RyanAlberts/bento.git
 cd bento
 ./scripts/build-app.sh release
 open build/Bento.app

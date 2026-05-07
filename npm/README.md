@@ -30,7 +30,7 @@ bento doctor            # self-diagnosis
 
 ## Full docs and source
 
-[github.com/ryan-alberts/bento](https://github.com/ryan-alberts/bento)
+[github.com/RyanAlberts/bento](https://github.com/RyanAlberts/bento)
 
 ## A star helps a lot
 
