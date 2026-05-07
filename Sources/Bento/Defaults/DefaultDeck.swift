@@ -7,54 +7,60 @@ enum DefaultDeck {
                 label: "Dark",
                 symbol: "moon.fill",
                 tint: .neutral,
-                action: .shell(#"osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to not dark mode'"#)
+                action: .shell(#"osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to not dark mode'"#),
+                info: "Toggle macOS Dark Mode on/off. First click asks once for permission to talk to System Events."
             ),
             Tile(
-                label: "Eject",
-                symbol: "eject.fill",
+                label: "Lock",
+                symbol: "lock.fill",
                 tint: .neutral,
-                action: .shell(#"osascript -e 'tell application "Finder" to eject (every disk whose ejectable is true)'"#)
+                action: .shell(#"/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"#),
+                info: "Lock the screen and require your password on wake. No permission prompt — uses macOS's built-in lock."
             ),
             Tile(
                 label: "Mic",
                 symbol: "mic.slash.fill",
                 tint: .neutral,
                 action: .shell(#"osascript -e 'set v to input volume of (get volume settings)' -e 'if v > 0 then' -e 'set volume input volume 0' -e 'else' -e 'set volume input volume 75' -e 'end if'"#),
-                liveKind: .mic
+                liveKind: .mic,
+                info: "Toggle the system microphone mute. Tile glows red when muted. Lives in any app — Zoom, Meet, FaceTime."
             ),
             Tile(
                 label: "Coffee",
                 symbol: "cup.and.saucer.fill",
                 tint: .accent,
                 action: .shell("caffeinate -d -t 3600 &"),
-                liveKind: .caffeinate
+                liveKind: .caffeinate,
+                info: "Stop your Mac from sleeping for 60 minutes. Live ring traces the countdown. For long meetings, downloads, or presentations."
             ),
             Tile(
                 label: "Snap",
                 symbol: "camera.viewfinder",
                 tint: .neutral,
-                action: .shell(#"screencapture -i "$HOME/Desktop/shot-$(date +%s).png""#)
+                action: .shell(#"screencapture -i "$HOME/Desktop/shot-$(date +%s).png""#),
+                info: "Take an interactive screenshot — drag a region with the crosshair, the PNG saves to your Desktop with a timestamp."
             ),
             Tile(
-                label: "Play",
-                symbol: "play.fill",
+                label: "Notes",
+                symbol: "note.text",
                 tint: .neutral,
-                // v1 fallback: use AppleScript media-key cheat through Music.app.
-                // The proper HIDPostAuxKey path requires a tiny C bridge; deferred to v0.2.
-                action: .shell(#"osascript -e 'tell application "System Events" to key code 100'"#)
+                action: .shell("open -a Notes"),
+                info: "Open the macOS Notes app. (Replace with your favorite note app — see the README for how to customize.)"
             ),
             Tile(
                 label: "Sleep",
                 symbol: "moon.zzz.fill",
                 tint: .neutral,
-                action: .shell("pmset displaysleepnow")
+                action: .shell("pmset displaysleepnow"),
+                info: "Put your displays to sleep right now. Doesn't sleep the whole Mac — just turns the screen off."
             ),
             Tile(
                 label: "Focus",
                 symbol: "target",
                 tint: .accent,
-                action: .shell("caffeinate -d -i -t 1500 &"),
-                liveKind: .focus
+                action: .shell(#"caffeinate -d -i -t 1500 ; osascript -e 'display notification "Focus session complete" with title "Bento" sound name "Glass"' &"#),
+                liveKind: .focus,
+                info: "Start a 25-minute focus session. Mac stays awake, you get a sound + notification when it ends. Pomodoro-style."
             ),
         ]
     }

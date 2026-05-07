@@ -5,48 +5,62 @@ import SwiftUI
 final class PanelController: NSObject, NSWindowDelegate {
     static let shared = PanelController()
 
-    private var panel: NSPanel?
+    private var window: NSWindow?
     private let positionKey = "BentoPanelPositionFraction"
 
+    /// First-launch entry point. Builds the window if needed, positions it, and orders it front
+    /// (which on a regular app activates Bento normally — Dock icon highlights, app menu appears).
     func showInitial() {
-        if panel == nil { build() }
-        positionPanel()
-        panel?.orderFrontRegardless()
+        if window == nil { build() }
+        positionWindow()
+        window?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
+    /// Hotkey + menu toggle: shows the window if hidden (and brings Bento forward like Cmd+Tab),
+    /// or hides it if visible. Hide does not quit — the app stays in the Dock.
     func toggle() {
-        if panel == nil { build() }
-        guard let panel else { return }
-        if panel.isVisible {
-            panel.orderOut(nil)
+        if window == nil { build() }
+        guard let window else { return }
+        if window.isVisible {
+            window.orderOut(nil)
         } else {
-            positionPanel()
-            panel.orderFrontRegardless()
+            positionWindow()
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
         }
     }
 
     private func build() {
-        // Tall enough for 8 default tiles + the "+" tile on a 3rd row + coachmark
-        let initialSize = NSSize(width: 360, height: 320)
+        // Tall enough for 8 default tiles + the "+" tile on a 3rd row + coachmark + title bar.
+        let initialSize = NSSize(width: 360, height: 360)
         let initialOrigin = NSPoint(x: 200, y: 200)
-        let panel = BentoPanel(
+
+        // Regular Mac window — gets the standard close/minimize/zoom traffic-light buttons,
+        // participates in Mission Control, hot corners, Spaces, and Cmd+Tab. Not a HUD.
+        let window = BentoWindow(
             contentRect: NSRect(origin: initialOrigin, size: initialSize),
-            styleMask: [.borderless, .nonactivatingPanel, .resizable],
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
-        panel.isFloatingPanel = true
-        panel.becomesKeyOnlyIfNeeded = true
-        panel.hidesOnDeactivate = false
-        panel.level = .floating
-        panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
-        panel.isMovableByWindowBackground = true
-        panel.isOpaque = false
-        panel.backgroundColor = .clear
-        panel.hasShadow = true
-        panel.titleVisibility = .hidden
-        panel.titlebarAppearsTransparent = true
-        panel.delegate = self
+        window.title = "Bento"
+        window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
+        window.isMovableByWindowBackground = true
+        window.isReleasedWhenClosed = false
+        // Default window level + collection behavior — behaves like Calculator, Things3 quick-entry, etc.
+        window.level = .normal
+        window.collectionBehavior = [.fullScreenAuxiliary]  // can show in fullscreen apps' overlay if user wants
+        window.delegate = self
+        window.minSize = NSSize(width: 320, height: 280)
+
+        // Glass material so the panel looks polished, but we no longer pretend to be a HUD.
+        let visualEffect = NSVisualEffectView()
+        visualEffect.material = .windowBackground
+        visualEffect.state = .followsWindowActiveState
+        visualEffect.blendingMode = .behindWindow
+        visualEffect.translatesAutoresizingMaskIntoConstraints = false
 
         let host = NSHostingView(
             rootView:
@@ -54,15 +68,6 @@ final class PanelController: NSObject, NSWindowDelegate {
                     .environmentObject(DeckStore.shared)
         )
         host.translatesAutoresizingMaskIntoConstraints = false
-
-        let visualEffect = NSVisualEffectView()
-        visualEffect.material = .popover
-        visualEffect.state = .active
-        visualEffect.blendingMode = .behindWindow
-        visualEffect.wantsLayer = true
-        visualEffect.layer?.cornerRadius = 16
-        visualEffect.layer?.masksToBounds = true
-        visualEffect.translatesAutoresizingMaskIntoConstraints = false
 
         let container = NSView()
         container.addSubview(visualEffect)
@@ -78,25 +83,34 @@ final class PanelController: NSObject, NSWindowDelegate {
             host.trailingAnchor.constraint(equalTo: container.trailingAnchor),
         ])
 
-        panel.contentView = container
-        self.panel = panel
+        window.contentView = container
+        self.window = window
     }
 
-    private func positionPanel() {
-        guard let panel, let screen = NSScreen.main else { return }
+    private func positionWindow() {
+        guard let window, let screen = NSScreen.main else { return }
         let frame = screen.visibleFrame
         let saved = UserDefaults.standard.dictionary(forKey: positionKey) as? [String: Double]
         let xFrac = saved?["x"] ?? 0.5
         let yFrac = saved?["y"] ?? 0.5
 
         var origin = NSPoint(
-            x: frame.minX + xFrac * frame.width  - panel.frame.width / 2,
-            y: frame.minY + yFrac * frame.height - panel.frame.height / 2
+            x: frame.minX + xFrac * frame.width  - window.frame.width / 2,
+            y: frame.minY + yFrac * frame.height - window.frame.height / 2
         )
         // Clamp into visible bounds
-        origin.x = min(max(frame.minX, origin.x), frame.maxX - panel.frame.width)
-        origin.y = min(max(frame.minY, origin.y), frame.maxY - panel.frame.height)
-        panel.setFrameOrigin(origin)
+        origin.x = min(max(frame.minX, origin.x), frame.maxX - window.frame.width)
+        origin.y = min(max(frame.minY, origin.y), frame.maxY - window.frame.height)
+        window.setFrameOrigin(origin)
+    }
+
+    // MARK: - NSWindowDelegate
+
+    /// Clicking the X button HIDES the window instead of closing it. The app stays running
+    /// in the Dock; ⌃⌘B (or clicking the Dock icon) brings it back.
+    nonisolated func windowShouldClose(_ sender: NSWindow) -> Bool {
+        sender.orderOut(nil)
+        return false
     }
 
     nonisolated func windowDidMove(_ notification: Notification) {
@@ -106,20 +120,25 @@ final class PanelController: NSObject, NSWindowDelegate {
     }
 
     private func persistPosition() {
-        guard let panel, let screen = NSScreen.main else { return }
+        guard let window, let screen = NSScreen.main else { return }
         let frame = screen.visibleFrame
-        let center = NSPoint(x: panel.frame.midX, y: panel.frame.midY)
+        let center = NSPoint(x: window.frame.midX, y: window.frame.midY)
         let xFrac = (center.x - frame.minX) / frame.width
         let yFrac = (center.y - frame.minY) / frame.height
         UserDefaults.standard.set(["x": xFrac, "y": yFrac], forKey: positionKey)
     }
 }
 
-// NSPanel subclass needed because borderless panels otherwise refuse to become key.
-final class BentoPanel: NSPanel {
+/// Custom NSWindow subclass — kept so we can spot Bento's window via type-check
+/// (NSApp.windows.first(where: { $0 is BentoWindow })).
+final class BentoWindow: NSWindow {
     override var canBecomeKey: Bool { true }
-    override var canBecomeMain: Bool { false }
+    override var canBecomeMain: Bool { true }
 }
+
+// Backwards-compat alias so existing references in BentoApp / fireConfetti compile
+// without churn through every call site.
+typealias BentoPanel = BentoWindow
 
 // Tiny wrapper so DeckView gets the confetti overlay layered on top.
 struct DeckRootView: View {

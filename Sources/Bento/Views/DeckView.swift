@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct DeckView: View {
     @EnvironmentObject private var store: DeckStore
@@ -29,17 +30,38 @@ struct DeckView: View {
             }
             .padding(12)
 
-            if coachmarkVisible {
-                Text("click to run · ⌘-click to edit · drag to move · ⌃⌘B to toggle")
+            // Footer: help button + coachmark caption
+            HStack(spacing: 12) {
+                Button {
+                    NotificationCenter.default.post(name: .bentoOpenHelp, object: nil)
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "questionmark.circle")
+                        Text("Help")
+                    }
                     .font(.system(size: 11, design: .rounded))
                     .foregroundStyle(.secondary)
-                    .padding(.bottom, 8)
-                    .transition(.opacity)
-                    .task {
-                        try? await Task.sleep(nanoseconds: 4_000_000_000)
-                        await MainActor.run { dismissCoachmark() }
-                    }
+                }
+                .buttonStyle(.plain)
+                .help("Open the Bento Help window — explains every tile and shows how to add your own.")
+
+                Spacer()
+
+                if coachmarkVisible {
+                    Text("click to run · ⌘-click to edit · ⌃⌘B to toggle")
+                        .font(.system(size: 10, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .transition(.opacity)
+                        .task {
+                            try? await Task.sleep(nanoseconds: 4_000_000_000)
+                            await MainActor.run { dismissCoachmark() }
+                        }
+                }
             }
+            .padding(.horizontal, 14)
+            .padding(.bottom, 10)
         }
         .environmentObject(caffeinate)
         .environmentObject(mic)
@@ -52,6 +74,13 @@ struct DeckView: View {
             TileEditor(initial: tile) { updated in
                 store.update(updated)
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .bentoOpenAddSheet)) { _ in
+            showingAddSheet = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .bentoOpenHelp)) { _ in
+            // BentoApp's AppDelegate handles the actual window. Re-broadcast to AppleScript-style selector.
+            NSApp.sendAction(Selector(("showHelp")), to: nil, from: nil)
         }
     }
 
@@ -84,6 +113,10 @@ private struct AddTileButton: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
-        .help("Add tile")
+        .help("Add a new tile")
     }
+}
+
+extension Notification.Name {
+    static let bentoOpenHelp = Notification.Name("bento.openHelp")
 }

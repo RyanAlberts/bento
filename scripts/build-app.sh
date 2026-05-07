@@ -25,6 +25,14 @@ cp "$BIN_SRC/Bento"     "$APP/Contents/MacOS/Bento"
 cp "$BIN_SRC/bentocli"  "$APP/Contents/MacOS/bentocli"
 cp "$ROOT/Sources/Bento/Resources/Info.plist" "$APP/Contents/Info.plist"
 
+# Generate + bundle the bento-box themed app icon if it isn't already present
+if [ ! -f "$BUILD_DIR/AppIcon.icns" ]; then
+    echo "→ generating AppIcon.icns"
+    swift "$ROOT/scripts/generate-icon.swift"
+    iconutil -c icns "$BUILD_DIR/Bento.iconset" -o "$BUILD_DIR/AppIcon.icns"
+fi
+cp "$BUILD_DIR/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
+
 # PkgInfo so Launch Services treats this as a real app
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 

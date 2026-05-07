@@ -24,12 +24,10 @@
     <string>1</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
-    <key>LSUIElement</key>
-    <true/>
     <key>NSHumanReadableCopyright</key>
     <string>MIT License. © 2026 Ryan Alberts.</string>
     <key>NSAppleEventsUsageDescription</key>
-    <string>Bento needs Automation permission to run macOS actions like toggling Dark Mode and ejecting disks from your tiles.</string>
+    <string>Bento needs Automation permission to run macOS actions like toggling Dark Mode from your tiles. You can decline — only the Dark and Mic default tiles use Automation; everything else works without it.</string>
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
