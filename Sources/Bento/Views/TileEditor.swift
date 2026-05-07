@@ -31,7 +31,7 @@ struct TileEditor: View {
         ),
         ActionKindOption(
             id: OpenURLAction.kind,
-            title: "Open a link",
+            title: "Open a web page",
             helpText: "Any URL works — websites (https://), email (mailto:), or app schemes (raycast://, vscode://, even bento://press/<id>).",
             placeholder: "https://example.com"
         ),

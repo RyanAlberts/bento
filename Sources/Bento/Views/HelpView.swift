@@ -14,6 +14,15 @@ struct HelpView: View {
                     bullet("All your tiles live in ~/Library/Application Support/Bento/deck.json — you own them.")
                 }
 
+                section("About shell-command tiles") {
+                    bullet("A shell tile runs whatever command you typed in the editor, in zsh, as your own user account.")
+                    bullet("It can do anything you can do in Terminal — same powers, same limits.")
+                    bullet("Bento never runs a shell command on your behalf except by firing one of YOUR tiles. Nothing inbound (URL scheme, CLI, hotkey) can run a command that wasn't already in your deck.")
+                    bullet("⌘-click any tile to see the exact command before it runs.")
+                    bullet("Be careful with tiles you imported from someone else's JSON — read the command first. Same trust model as installing any open-source script.")
+                    bullet("Bento has no auto-update mechanism that could swap a safe command for a dangerous one — the deck only changes when you change it.")
+                }
+
                 section("How it works") {
                     bullet("Click any tile to fire its action.")
                     bullet("⌘-click a tile to edit it.")
