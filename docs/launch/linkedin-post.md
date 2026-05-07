@@ -32,7 +32,7 @@
 
 ## First-comment text (post within 60 seconds of publishing, pin it)
 
-> Repo: https://github.com/ryan-alberts/bento — `npm install -g bento` to try it.
+> Repo: https://github.com/RyanAlberts/bento — `npm install -g bento` to try it.
 >
 > A star ⭐ helps a lot; that's how indie projects find new people on GitHub.
 >

@@ -181,7 +181,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.orderFrontStandardAboutPanel(options: [
             .applicationName: "Bento",
             .applicationVersion: "0.1.0",
-            .credits: NSAttributedString(string: "A minimal, fun, open-source soft Stream Deck for macOS.\n\ngithub.com/ryan-alberts/bento"),
+            .credits: NSAttributedString(string: "A minimal, fun, open-source soft Stream Deck for macOS.\n\ngithub.com/RyanAlberts/bento"),
         ])
     }
 
@@ -232,13 +232,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func openRecipes() {
-        if let url = URL(string: "https://github.com/ryan-alberts/bento/tree/main/recipes") {
+        if let url = URL(string: "https://github.com/RyanAlberts/bento/tree/main/recipes") {
             NSWorkspace.shared.open(url)
         }
     }
 
     @objc private func reportIssue() {
-        if let url = URL(string: "https://github.com/ryan-alberts/bento/issues/new") {
+        if let url = URL(string: "https://github.com/RyanAlberts/bento/issues/new") {
             NSWorkspace.shared.open(url)
         }
     }
