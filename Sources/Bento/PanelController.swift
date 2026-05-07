@@ -7,12 +7,31 @@ final class PanelController: NSObject, NSWindowDelegate {
 
     private var window: NSWindow?
     private let positionKey = "BentoPanelPositionFraction"
+    private let opacityKey = "BentoPanelOpacity"
+    private var opacityObserver: NSObjectProtocol?
+
+    override init() {
+        super.init()
+        // Listen for opacity changes from Preferences and apply live.
+        opacityObserver = NotificationCenter.default.addObserver(
+            forName: .bentoOpacityChanged,
+            object: nil,
+            queue: .main
+        ) { [weak self] note in
+            Task { @MainActor in
+                if let value = note.object as? Double {
+                    self?.applyOpacity(value)
+                }
+            }
+        }
+    }
 
     /// First-launch entry point. Builds the window if needed, positions it, and orders it front
     /// (which on a regular app activates Bento normally — Dock icon highlights, app menu appears).
     func showInitial() {
         if window == nil { build() }
         positionWindow()
+        applyOpacity(currentOpacity())
         window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -130,6 +149,24 @@ final class PanelController: NSObject, NSWindowDelegate {
         let xFrac = (center.x - frame.minX) / frame.width
         let yFrac = (center.y - frame.minY) / frame.height
         UserDefaults.standard.set(["x": xFrac, "y": yFrac], forKey: positionKey)
+    }
+
+    // MARK: - Opacity (Preferences-driven)
+
+    private func currentOpacity() -> Double {
+        let stored = UserDefaults.standard.double(forKey: opacityKey)
+        return stored == 0 ? 1.0 : stored
+    }
+
+    private func applyOpacity(_ value: Double) {
+        guard let window else { return }
+        let clamped = max(0.4, min(1.0, value))
+        window.alphaValue = CGFloat(clamped)
+        // When the panel is transparent, dragging by the background gets weird:
+        // clicks pass through to whatever's behind, and the user reports they
+        // can't move it. We disable background-drag while transparent — the user
+        // still has Preferences → Reset Panel Position to recenter.
+        window.isMovableByWindowBackground = clamped >= 0.95
     }
 }
 
