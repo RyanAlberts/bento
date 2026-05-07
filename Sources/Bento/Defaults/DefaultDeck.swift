@@ -20,15 +20,15 @@ enum DefaultDeck {
                 label: "Snap",
                 symbol: "camera.viewfinder",
                 tint: .neutral,
-                // We hand off to macOS Screenshot.app instead of `screencapture -ic`.
-                // `screencapture` itself requires Screen Recording permission, and on
-                // every Bento rebuild the binary signature changes so TCC re-prompts
-                // even when the user has already toggled the setting on. Screenshot.app
-                // has its own permanent Screen Recording grant on most Macs (granted
-                // the first time the user ever pressed ⌘⇧5), so opening it is the
-                // permission-free path. Slight launch lag (~200ms first time) is the
-                // cost of zero re-prompts.
-                action: .shell("open -a Screenshot"),
+                // Use the LaunchApp action (NSWorkspace.openApplication) instead of
+                // `open -a Screenshot` from the shell. Shell-spawned launches inherit
+                // Bento's process tree, and macOS Tahoe attributes the resulting
+                // screen capture to Bento — so even though Screenshot.app has its own
+                // Screen Recording grant, you get prompted to grant it for Bento too,
+                // and the capture itself fails. NSWorkspace.openApplication does a
+                // clean detached launch, so attribution lands on Screenshot.app, which
+                // already has the grant from any prior ⌘⇧5 use.
+                action: .launchApp("/System/Applications/Utilities/Screenshot.app"),
                 info: "Open macOS Screenshot — pick region, window, or full screen. Press Esc to dismiss."
             ),
             Tile(
