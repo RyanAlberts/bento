@@ -33,6 +33,9 @@ jq '{schemaVersion: 1, tiles: ((.tiles // []) + (input | .tiles))}' my-deck-back
 
 ## Browse
 
-- [obs-scene-switcher.json](obs-scene-switcher.json) — tiles for switching OBS scenes
-- [git-status-checker.json](git-status-checker.json) — tile that opens GitHub status
-- [zoom-mute.json](zoom-mute.json) — tile that toggles Zoom's mic via shortcut
+- [obs-scene-switcher.json](obs-scene-switcher.json) — switch OBS scenes
+- [git-status-checker.json](git-status-checker.json) — open GitHub's status page
+- [zoom-mute.json](zoom-mute.json) — toggle Zoom's global mic mute hotkey
+- [dock-autohide.json](dock-autohide.json) — toggle Dock auto-hide (no permissions)
+- [finder-hidden-files.json](finder-hidden-files.json) — toggle Finder hidden files (no permissions)
+- [ai-with-prompt.json](ai-with-prompt.json) — pop a dialog, ask AI; opens Google AI Mode pre-filled

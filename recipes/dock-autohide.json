@@ -1,0 +1,16 @@
+{
+  "name": "Dock auto-hide toggle",
+  "description": "Toggle whether the macOS Dock auto-hides when you mouse away. No permissions needed — uses macOS's built-in defaults system.",
+  "tiles": [
+    {
+      "label": "Dock",
+      "symbol": "dock.rectangle",
+      "tint": "neutral",
+      "action": {
+        "kind": "shell",
+        "payload": "defaults write com.apple.dock autohide -bool $([[ $(defaults read com.apple.dock autohide 2>/dev/null) == \"1\" ]] && echo false || echo true) && killall Dock"
+      },
+      "info": "Toggle whether the Dock auto-hides when you mouse away from it."
+    }
+  ]
+}
