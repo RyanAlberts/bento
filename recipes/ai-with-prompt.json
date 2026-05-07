@@ -1,0 +1,16 @@
+{
+  "name": "Ask AI with a prompt",
+  "description": "Pop a dialog asking what you want to know, then open Google AI Mode with your question pre-filled. Triggers a one-time System Events Automation prompt (used for the input dialog).",
+  "tiles": [
+    {
+      "label": "AskAI",
+      "symbol": "wand.and.sparkles",
+      "tint": "accent",
+      "action": {
+        "kind": "shell",
+        "payload": "q=$(osascript -e 'tell application \"System Events\" to text returned of (display dialog \"Ask AI:\" default answer \"\" with title \"Bento\")' 2>/dev/null) && [ -n \"$q\" ] && open \"https://www.google.com/search?udm=50&q=$(echo \"$q\" | sed 's/ /%20/g')\""
+      },
+      "info": "Prompt for a question, then open Google AI Mode with your query already typed in."
+    }
+  ]
+}

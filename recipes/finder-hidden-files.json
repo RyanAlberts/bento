@@ -1,0 +1,16 @@
+{
+  "name": "Show / hide hidden files in Finder",
+  "description": "Toggle whether Finder shows dotfiles and ~/Library. Same as ⌘⇧. but as a tile. No permissions needed.",
+  "tiles": [
+    {
+      "label": "Hidden",
+      "symbol": "eye",
+      "tint": "neutral",
+      "action": {
+        "kind": "shell",
+        "payload": "defaults write com.apple.finder AppleShowAllFiles -bool $([[ $(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null) == \"1\" ]] && echo false || echo true) && killall Finder"
+      },
+      "info": "Toggle whether Finder shows hidden files (dotfiles, ~/Library, etc.)."
+    }
+  ]
+}
