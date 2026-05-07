@@ -2,7 +2,7 @@
 
 > Copy the post body verbatim. Post from your account. The optimization playbook below is the multiplier.
 
-## The post (≈165 words, hook in first 110 chars, mobile-truncation-safe)
+## The post (≈170 words, hook in first 110 chars, mobile-truncation-safe)
 
 > Built a Stream Deck for your Mac screen. No hardware, no subscription, fully open source.
 >
@@ -10,21 +10,21 @@
 >
 > Install in one line: `npm install -g bento-deck`
 >
-> Press `⌃⌘B` from anywhere → 8 tiles appear. Click one → magic happens.
+> Press `⌃⌘B` from anywhere → 8 tiles appear. Arrow keys to navigate, Enter to fire — full keyboard nav, no mouse needed. ⌘-click any tile to edit.
 >
 > What ships in the default deck:
+> · Open Google AI Mode in your browser
+> · Take a screenshot
+> · Caffeinate 60 min — live progress ring
+> · 25-minute focus timer with completion chime
+> · Open Notes
+> · Toggle mic mute — glows red when muted
 > · Toggle dark mode
-> · Caffeinate 60min — with a live progress ring
-> · Mute the mic — glows red when muted
-> · Snap a screenshot
-> · Eject all disks
-> · Sleep displays
-> · Play / pause media
-> · 25-minute focus timer
+> · Sleep your displays
 >
-> Plus you can drop in any shell command, URL, or app. So it doubles as a Hammerspoon companion, a Shortcuts launcher, a one-key OBS controller, or a tiny dashboard for whatever else you script.
+> Plus you can drop in any shell command, URL, or app — so it doubles as a Hammerspoon companion, a Shortcuts launcher, a one-key OBS controller, or a tiny dashboard for whatever else you script.
 >
-> Built in Swift in a weekend. Zero telemetry, zero accounts, zero network calls. Hot-reloadable JSON config. Tiny `bento` CLI for Hammerspoon-style chaining.
+> Built in Swift in a weekend. Zero telemetry, zero accounts, zero network calls. Hot-reloadable JSON config. Tiny `bento` CLI for keyboard-shortcut and Hammerspoon-style chaining.
 >
 > What macro would you put on your second row?
 >
