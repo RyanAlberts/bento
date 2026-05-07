@@ -7,6 +7,7 @@ struct Tile: Identifiable, Codable, Hashable {
     var tint: TileTint
     var action: AnyAction
     var liveKind: LiveKind?
+    var info: String        // one-line plain-English description, shown in tooltip + Help screen
 
     init(
         id: UUID = UUID(),
@@ -14,7 +15,8 @@ struct Tile: Identifiable, Codable, Hashable {
         symbol: String,
         tint: TileTint = .neutral,
         action: AnyAction,
-        liveKind: LiveKind? = nil
+        liveKind: LiveKind? = nil,
+        info: String = ""
     ) {
         self.id = id
         self.label = label
@@ -22,6 +24,23 @@ struct Tile: Identifiable, Codable, Hashable {
         self.tint = tint
         self.action = action
         self.liveKind = liveKind
+        self.info = info
+    }
+
+    // Forward-compat decoder so existing deck.json files (without `info`) still load.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        label = try c.decode(String.self, forKey: .label)
+        symbol = try c.decode(String.self, forKey: .symbol)
+        tint = try c.decode(TileTint.self, forKey: .tint)
+        action = try c.decode(AnyAction.self, forKey: .action)
+        liveKind = try c.decodeIfPresent(LiveKind.self, forKey: .liveKind)
+        info = try c.decodeIfPresent(String.self, forKey: .info) ?? ""
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, label, symbol, tint, action, liveKind, info
     }
 
     var slug: String {

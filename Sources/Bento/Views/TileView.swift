@@ -99,7 +99,7 @@ struct TileView: View {
             Button("Edit") { onEdit(tile) }
             Button("Delete", role: .destructive) { onDelete(tile) }
         }
-        .help(tile.label)
+        .help(tile.info.isEmpty ? tile.label : "\(tile.label) — \(tile.info)")
     }
 
     private func firePress() {

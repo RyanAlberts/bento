@@ -30,24 +30,37 @@ open build/Bento.app
 
 ## Why
 
-Stream Deck Mobile is locked to iOS. Mosaic and Quadro are skeuomorphic and largely abandoned. Raycast script-commands are great but modal — they vanish when you act. There was room for something *always-on-screen* that a power user can also drive from Hammerspoon, Shortcuts, or a CLI. Bento is that.
+Stream Deck Mobile is locked to iOS. Mosaic and Quadro are skeuomorphic and largely abandoned. Raycast script-commands are great but modal — they vanish when you act. There was room for a small native Mac app whose only job is "press a tile, run a thing", with the same hot-key + Hammerspoon + Shortcuts hooks a power user already lives in.
 
-It is deliberately a tiny app. One floating panel, one editor sheet, one CLI binary, one global hotkey. Less than 1 MB compiled. The whole codebase is ~1 200 lines of Swift you can read in an afternoon.
+It is deliberately a tiny app. One window, one editor sheet, one CLI binary, one global hotkey. ~1.4 MB compiled. The whole codebase is ~1 400 lines of Swift you can read in an afternoon.
 
 ## What ships in the default deck
 
-| Tile      | What it does                                                      |
-|-----------|-------------------------------------------------------------------|
-| **Dark**   | Toggle macOS dark mode                                            |
-| **Eject**  | Eject every ejectable disk                                        |
-| **Mic**    | Toggle system mic mute. Tile turns red when muted (live state).   |
-| **Coffee** | `caffeinate -d -t 3600`. Live progress ring traces the 60 minutes. |
-| **Snap**   | `screencapture -i` with a timestamped filename                   |
-| **Play**   | Play / pause whatever's playing                                   |
-| **Sleep**  | `pmset displaysleepnow`                                           |
-| **Focus**  | 25-minute focus session with a live progress ring                 |
+| Tile       | What it does                                                                   | Permission |
+|------------|--------------------------------------------------------------------------------|------------|
+| **Dark**   | Toggle macOS Dark Mode on/off.                                                 | Asks once for Automation (System Events) |
+| **Lock**   | Lock the screen and require your password on wake.                             | None |
+| **Mic**    | Toggle the system mic mute. Tile glows red when muted. Live state.             | Asks once for Automation (System Events) |
+| **Coffee** | Stop your Mac from sleeping for 60 minutes. Live ring traces the countdown.    | None |
+| **Snap**   | Interactive screenshot — drag a region, PNG saves to your Desktop.             | None |
+| **Notes**  | Open the macOS Notes app. (Edit to point at your favorite note app.)           | None |
+| **Sleep**  | Put your displays to sleep right now (doesn't sleep the whole Mac).            | None |
+| **Focus**  | 25-minute focus session — Mac stays awake, sound + notification when done.     | None |
+
+Hover any tile in the app to see this same one-line description. Open **Help → Bento Help** in the menu bar for the full tour.
 
 You can edit, remove, or reorder any of them. None are sacred.
+
+## How it behaves like a real Mac app
+
+Bento ships as a **regular macOS app**, not a menu bar utility:
+
+- **Dock icon** — bento-box themed, appears in your Dock like any other app
+- **Standard menu bar** at the top of the screen: App / File / Edit / View / Window / Help
+- **Traffic-light close button** on the window — clicking the red **X hides the panel** (Bento stays in your Dock so `⌃⌘B` still re-summons it). To quit fully: `⌘Q` or App menu → Quit Bento
+- **Mission Control + Spaces + hot corners** all work normally. The window respects `⌘+H` to hide, `⌘+M` to minimize
+- **Cmd+Tab** brings Bento forward like any other app
+- **`⌃⌘B` global hotkey** summons the window from any app — even when Bento is hidden or behind other apps
 
 ## Customize
 
