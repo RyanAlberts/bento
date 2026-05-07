@@ -1,6 +1,6 @@
 {
   "name": "bento-deck",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A minimal, fun, open-source soft Stream Deck for macOS. No hardware, no subscription. Built in SwiftUI.",
   "homepage": "https://github.com/RyanAlberts/bento",
   "repository": {
@@ -41,9 +41,9 @@
     "LICENSE"
   ],
   "bento": {
-    "releaseTag": "v0.1.0",
-    "zipName": "Bento-v0.1.0.zip",
-    "zipSha256": "f11dce51e2f516b9d04ae2132e15dc7812199d15576df525e3b5a011af528367",
+    "releaseTag": "v0.1.1",
+    "zipName": "Bento-v0.1.1.zip",
+    "zipSha256": "869256e832162e270b26cac3cec55bdf2d82033a69a0e6d79904f28b4e292313",
     "comment": "If you fork or self-publish, override these to point at your own GitHub release."
   }
 }
