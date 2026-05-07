@@ -24,7 +24,7 @@
 **Recommended (one line, no Gatekeeper dance):**
 
 ```
-npm install -g bento
+npm install -g bento-deck
 ```
 
 That installs `Bento.app` to `/Applications` and a `bento` command on your PATH. The postinstall strips the quarantine flag so the ad-hoc-signed binary launches without the "from an unidentified developer" prompt.
