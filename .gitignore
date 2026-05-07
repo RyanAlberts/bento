@@ -1,0 +1,27 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Xcode (if anyone opens Package.swift in Xcode)
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+
+# Build artifacts
+build/
+*.dmg
+*.zip
+*.app
+
+# npm
+npm/node_modules/
+npm/*.tgz
+
+# macOS
+.DS_Store
+*.swp
+
+# Local Bento state during development
+*.local.json
