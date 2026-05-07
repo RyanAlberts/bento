@@ -43,6 +43,7 @@
   "bento": {
     "releaseTag": "v0.1.0",
     "zipName": "Bento-v0.1.0.zip",
+    "zipSha256": "f11dce51e2f516b9d04ae2132e15dc7812199d15576df525e3b5a011af528367",
     "comment": "If you fork or self-publish, override these to point at your own GitHub release."
   }
 }
