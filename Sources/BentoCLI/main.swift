@@ -32,7 +32,7 @@ case "export":
 case "import":
     cmdImport()
 case "--version", "-v":
-    print("bento 0.1.0")
+    print("bento 0.1.1")
 case "--help", "-h", "help":
     printUsage()
 default:
@@ -43,7 +43,7 @@ default:
 
 func printUsage() {
     print("""
-    bento 0.1.0 — minimal soft Stream Deck for macOS
+    bento 0.1.1 — minimal soft Stream Deck for macOS
 
     Usage:
       bento press <id-or-label>   Fire a tile by ID or label
@@ -79,7 +79,7 @@ func cmdList() {
 
 func cmdDoctor() {
     let path = deckPath()
-    print("Bento CLI 0.1.0")
+    print("Bento CLI 0.1.1")
     print("Config:    \(path.path)")
     print("Exists:    \(FileManager.default.fileExists(atPath: path.path) ? "yes" : "no — will be created on first launch")")
     if let data = try? Data(contentsOf: path),
