@@ -34,7 +34,9 @@ struct TileView: View {
     private var effectiveTint: TileTint {
         if errorFlash { return .red }
         if tile.liveKind == .mic && mic.isMuted { return .red }
-        if isLiveActive && tile.tint == .accent { return .accent }
+        // Any live tile lights up accent while active, regardless of base tint —
+        // so Coffee/Focus glow when running even though they sit neutral at rest.
+        if isLiveActive { return .accent }
         return tile.tint
     }
 
