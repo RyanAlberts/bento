@@ -1,6 +1,8 @@
 # Bento
 
-A desktop App that let's you launch applications, take screenshots, and create and automate custom workflows with a single click.This app can record a multi-step workflow and collapse it into a single click. If you can dream it, this app can automate it. Custom workflows built by you, for you, and entirely local to your computer. Create arbitrary 1-click buttons that execute custom, recorded sequences of actions like keystrokes, mouse clicks or shell commands. You create the macro (the sequence of clicks anbd keystrokes) and this app makes it a clickable button that it will automate for you. Free to install and use with AI. 
+A desktop App that let's you launch applications, take screenshots, and create and automate custom workflows with a single click.
+
+This app can record a multi-step workflow and collapse it into a single click. If you can dream it, this app can automate it. Custom workflows built by you, for you, and entirely local to your computer. Create arbitrary 1-click buttons that execute custom, recorded sequences of actions like keystrokes, mouse clicks or shell commands. You create the macro (the sequence of clicks anbd keystrokes) and this app makes it a clickable button that it will automate for you. Free to install and use with AI. 
 > Press `⌃⌘B` from anywhere — eight tiles appear. Click one — magic happens.
 
 ![Bento screenshot](docs/hero.png)
