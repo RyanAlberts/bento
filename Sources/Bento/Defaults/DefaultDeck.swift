@@ -11,13 +11,6 @@ enum DefaultDeck {
                 info: "Toggle macOS Dark Mode on/off. First click asks once for permission to talk to System Events."
             ),
             Tile(
-                label: "Lock",
-                symbol: "lock.fill",
-                tint: .neutral,
-                action: .shell(#"/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"#),
-                info: "Lock the screen and require your password on wake. No permission prompt — uses macOS's built-in lock."
-            ),
-            Tile(
                 label: "Mic",
                 symbol: "mic.slash.fill",
                 tint: .neutral,
@@ -37,8 +30,12 @@ enum DefaultDeck {
                 label: "Snap",
                 symbol: "camera.viewfinder",
                 tint: .neutral,
-                action: .shell(#"screencapture -i "$HOME/Desktop/shot-$(date +%s).png""#),
-                info: "Take an interactive screenshot — drag a region with the crosshair, the PNG saves to your Desktop with a timestamp."
+                // Using macOS's Screenshot.app instead of `screencapture -i` shell-invoke — the
+                // shell path has flaky Screen Recording TCC behavior when spawned from a regular
+                // app on Tahoe. Screenshot.app gives users the same crosshair UI + the region /
+                // window / full-screen toggle, all without TCC tangles.
+                action: .shell("open -a Screenshot"),
+                info: "Open macOS Screenshot — pick region, window, or full screen. Press Esc to dismiss without capturing."
             ),
             Tile(
                 label: "Notes",
