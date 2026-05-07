@@ -3,6 +3,7 @@ import AppKit
 
 struct TileView: View {
     let tile: Tile
+    var isFocused: Bool = false
     let onPress: (Tile) -> Void
     let onEdit: (Tile) -> Void
     let onDelete: (Tile) -> Void
@@ -62,8 +63,14 @@ struct TileView: View {
                 .fill(bgColor)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                        .stroke(
+                            isFocused ? Color.accentColor.opacity(0.85) : Color.primary.opacity(0.08),
+                            lineWidth: isFocused ? 2 : 1
+                        )
                 )
+                // Subtle accent halo when keyboard-focused — reads as "this is the
+                // active selection" without being shouty.
+                .shadow(color: isFocused ? Color.accentColor.opacity(0.35) : .clear, radius: isFocused ? 6 : 0)
 
             if let frac = ringFraction {
                 Circle()
@@ -85,8 +92,9 @@ struct TileView: View {
             }
         }
         .frame(width: 76, height: 76)
-        .scaleEffect(pressed ? 0.92 : 1.0)
+        .scaleEffect(pressed ? 0.92 : (isFocused ? 1.04 : 1.0))
         .animation(.spring(response: 0.18, dampingFraction: 0.55), value: pressed)
+        .animation(.easeOut(duration: 0.12), value: isFocused)
         .onHover { hovering = $0 }
         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         .onTapGesture {
@@ -107,6 +115,9 @@ struct TileView: View {
     private func firePress() {
         pressed = true
         NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+        if UserDefaults.standard.bool(forKey: "BentoSoundOnPress") {
+            NSSound(named: "Pop")?.play()
+        }
         Task {
             try? await Task.sleep(nanoseconds: 100_000_000)
             await MainActor.run { pressed = false }

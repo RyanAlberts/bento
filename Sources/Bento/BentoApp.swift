@@ -23,6 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private var watcher: DeckWatcher?
     private var helpWindow: NSWindow?
+    private var preferencesWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         TCCPreWarning.showIfNeeded()
@@ -58,6 +59,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let appMenuItem = NSMenuItem()
         let appMenu = NSMenu()
         appMenu.addItem(NSMenuItem(title: "About Bento", action: #selector(showAbout), keyEquivalent: ""))
+        appMenu.addItem(NSMenuItem.separator())
+        appMenu.addItem(NSMenuItem(title: "Preferences…", action: #selector(showPreferences), keyEquivalent: ","))
         appMenu.addItem(NSMenuItem.separator())
         appMenu.addItem(NSMenuItem(title: "Hide Bento", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h"))
         let hideOthers = NSMenuItem(title: "Hide Others", action: #selector(NSApplication.hideOtherApplications(_:)), keyEquivalent: "h")
@@ -200,6 +203,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    @objc private func showPreferences() {
+        if preferencesWindow == nil {
+            let win = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 460, height: 380),
+                styleMask: [.titled, .closable],
+                backing: .buffered,
+                defer: false
+            )
+            win.title = "Bento Preferences"
+            win.center()
+            win.isReleasedWhenClosed = false
+            win.contentView = NSHostingView(rootView: PreferencesView())
+            preferencesWindow = win
+        }
+        preferencesWindow?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     @objc private func openDeckFolder() {
         let url = DeckStore.shared.configFileURL.deletingLastPathComponent()
         NSWorkspace.shared.open(url)
@@ -260,6 +281,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         ) { note in
             if let needle = note.userInfo?["needle"] as? String {
                 Task { @MainActor in BentoURLHandler.press(needle: needle) }
+            }
+        }
+
+        // Preferences-driven actions
+        NotificationCenter.default.addObserver(
+            forName: .bentoResetPosition,
+            object: nil,
+            queue: .main
+        ) { _ in
+            Task { @MainActor in
+                UserDefaults.standard.removeObject(forKey: "BentoPanelPositionFraction")
+                PanelController.shared.showInitial()
             }
         }
     }
