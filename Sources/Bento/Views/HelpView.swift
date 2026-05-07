@@ -8,6 +8,12 @@ struct HelpView: View {
             VStack(alignment: .leading, spacing: 24) {
                 header
 
+                section("Privacy") {
+                    bullet("Zero telemetry, zero analytics, zero accounts.")
+                    bullet("No network calls (other than the npm postinstall, which downloads from this app's GitHub release).")
+                    bullet("All your tiles live in ~/Library/Application Support/Bento/deck.json — you own them.")
+                }
+
                 section("How it works") {
                     bullet("Click any tile to fire its action.")
                     bullet("⌘-click a tile to edit it.")
@@ -43,8 +49,8 @@ struct HelpView: View {
 
                 section("Add your own") {
                     bullet("Click the dashed + tile in the panel.")
-                    bullet("Pick a label, an SF Symbol icon (browse them at developer.apple.com/sf-symbols), and what the tile does.")
-                    bullet("Three action types: launch an app, open a URL, or run a shell command.")
+                    bullet("Pick an icon, a label, and what the tile does.")
+                    bullet("Three action types: launch an app (with a file picker), open a URL, or run a shell command.")
                     bullet("The shell action is the universal escape hatch — anything you can type in Terminal works.")
                 }
 
@@ -54,12 +60,6 @@ struct HelpView: View {
                         .foregroundStyle(.secondary)
                     code("open 'bento://press/dark'")
                     code("bento press dark   # the bento CLI; install with ./scripts/install-cli.sh")
-                }
-
-                section("Privacy") {
-                    bullet("Zero telemetry, zero analytics, zero accounts.")
-                    bullet("No network calls (other than the npm postinstall, which downloads from this app's GitHub release).")
-                    bullet("All your tiles live in ~/Library/Application Support/Bento/deck.json — you own them.")
                 }
 
                 Spacer().frame(height: 8)

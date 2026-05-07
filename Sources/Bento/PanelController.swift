@@ -34,8 +34,8 @@ final class PanelController: NSObject, NSWindowDelegate {
     private func build() {
         // 28pt title bar + 2 rows of 76pt tiles + 8pt grid spacing + 12pt grid padding × 2
         // + ~36pt footer (Help button + coachmark) = ~280pt minimum.
-        // 340pt gives a bit of breathing room without wasted space.
-        let initialSize = NSSize(width: 360, height: 340)
+        // 380pt gives plenty of slack so the Help button never clips on any display.
+        let initialSize = NSSize(width: 360, height: 380)
         let initialOrigin = NSPoint(x: 200, y: 200)
 
         // Regular Mac window — gets the standard close/minimize/zoom traffic-light buttons,
@@ -57,7 +57,7 @@ final class PanelController: NSObject, NSWindowDelegate {
         window.delegate = self
         // Min size enforced so the user can't shrink past where the footer (Help button +
         // coachmark) would clip. Width allows a slight squeeze for narrower screens.
-        window.minSize = NSSize(width: 340, height: 320)
+        window.minSize = NSSize(width: 340, height: 360)
 
         // Glass material so the panel looks polished, but we no longer pretend to be a HUD.
         let visualEffect = NSVisualEffectView()
