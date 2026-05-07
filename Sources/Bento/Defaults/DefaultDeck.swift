@@ -30,12 +30,12 @@ enum DefaultDeck {
                 label: "Snap",
                 symbol: "camera.viewfinder",
                 tint: .neutral,
-                // Using macOS's Screenshot.app instead of `screencapture -i` shell-invoke — the
-                // shell path has flaky Screen Recording TCC behavior when spawned from a regular
-                // app on Tahoe. Screenshot.app gives users the same crosshair UI + the region /
-                // window / full-screen toggle, all without TCC tangles.
-                action: .shell("open -a Screenshot"),
-                info: "Open macOS Screenshot — pick region, window, or full screen. Press Esc to dismiss without capturing."
+                // -i = interactive crosshair (drag a region), -c = save to clipboard.
+                // Clipboard avoids writing to Desktop (which trips Tahoe's
+                // "access Desktop folder" TCC prompt). It's also instant — no
+                // Screenshot.app launch lag. Paste anywhere with ⌘V.
+                action: .shell("screencapture -ic"),
+                info: "Drag a region with the crosshair — your screenshot lands on the clipboard. Paste with ⌘V into any app."
             ),
             Tile(
                 label: "Notes",
@@ -55,9 +55,13 @@ enum DefaultDeck {
                 label: "Focus",
                 symbol: "target",
                 tint: .neutral,
-                action: .shell(#"caffeinate -d -i -t 1500 ; osascript -e 'display notification "Focus session complete" with title "Bento" sound name "Glass"' &"#),
+                // 25-min stay-awake, then a system sound when done. We deliberately
+                // skip `display notification` because it triggers the
+                // UserNotifications permission prompt — better to make a sound
+                // and stay quiet on the permission front.
+                action: .shell("caffeinate -d -i -t 1500 ; afplay /System/Library/Sounds/Glass.aiff &"),
                 liveKind: .focus,
-                info: "Start a 25-minute focus session. Mac stays awake, you get a sound + notification when it ends. Pomodoro-style."
+                info: "Start a 25-minute focus session. Mac stays awake, you hear a chime when it ends. Pomodoro-style."
             ),
             Tile(
                 label: "AI",
