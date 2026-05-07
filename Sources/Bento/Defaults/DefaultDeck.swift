@@ -21,7 +21,7 @@ enum DefaultDeck {
             Tile(
                 label: "Coffee",
                 symbol: "cup.and.saucer.fill",
-                tint: .accent,
+                tint: .neutral,
                 action: .shell("caffeinate -d -t 3600 &"),
                 liveKind: .caffeinate,
                 info: "Stop your Mac from sleeping for 60 minutes. Live ring traces the countdown. For long meetings, downloads, or presentations."
@@ -54,7 +54,7 @@ enum DefaultDeck {
             Tile(
                 label: "Focus",
                 symbol: "target",
-                tint: .accent,
+                tint: .neutral,
                 action: .shell(#"caffeinate -d -i -t 1500 ; osascript -e 'display notification "Focus session complete" with title "Bento" sound name "Glass"' &"#),
                 liveKind: .focus,
                 info: "Start a 25-minute focus session. Mac stays awake, you get a sound + notification when it ends. Pomodoro-style."
