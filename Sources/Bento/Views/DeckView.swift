@@ -84,6 +84,9 @@ struct DeckView: View {
         .environmentObject(mic)
         .focusable()
         .focused($deckHasFocus)
+        // Suppress the system's blue focus ring that wraps the whole deck —
+        // we draw our own per-tile focus indicator (accent border + halo).
+        .focusEffectDisabled()
         .onAppear {
             // Auto-focus the deck so arrow keys work without an extra click.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
