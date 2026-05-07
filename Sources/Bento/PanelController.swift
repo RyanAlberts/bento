@@ -18,8 +18,11 @@ final class PanelController: NSObject, NSWindowDelegate {
             object: nil,
             queue: .main
         ) { [weak self] note in
-            Task { @MainActor in
-                if let value = note.object as? Double {
+            // Extract the value before crossing the actor boundary so Swift 6
+            // strict concurrency doesn't choke on the non-Sendable Notification.
+            let value = note.object as? Double
+            Task { @MainActor [weak self] in
+                if let value {
                     self?.applyOpacity(value)
                 }
             }
@@ -132,7 +135,11 @@ final class PanelController: NSObject, NSWindowDelegate {
     /// Clicking the X button HIDES the window instead of closing it. The app stays running
     /// in the Dock; ⌃⌘B (or clicking the Dock icon) brings it back.
     nonisolated func windowShouldClose(_ sender: NSWindow) -> Bool {
-        sender.orderOut(nil)
+        // NSWindowDelegate calls always come on the main thread; assumeIsolated
+        // tells the compiler we know that, satisfying Swift 6 strict concurrency.
+        MainActor.assumeIsolated {
+            sender.orderOut(nil)
+        }
         return false
     }
 
