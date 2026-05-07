@@ -145,13 +145,29 @@ Why SPM and not Xcode? It builds with just Command Line Tools (~1 GB instead of 
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Recipe PRs get fast-merged.
 
-## Known gaps
+## Coming in v0.2
 
-- No auto-update (Sparkle ships in v0.2)
-- Configurable hotkey ships in v0.2; v0.1 hardcodes `⌃⌘B`
-- The Play tile uses `osascript` media-key cheat through the active media app; a proper `IOHIDPostEvent`-based bridge is queued for v0.2
-- No XCTest target yet — Command Line Tools doesn't ship XCTest. Tests come back when we add the library-target refactor (v0.2)
-- Homebrew tap is a stretch goal
+- **Macro recording** — record cursor moves, clicks, and keystrokes; play them back from a tile. Most-requested Stream Deck feature outside of OBS scenes; needs Accessibility permission, which is why it's not in v0.1.
+- **Auto-update via Sparkle** so you don't have to `npm update -g bento` to get fixes.
+- **Configurable global hotkey** with a key-recorder UI (v0.1 hardcodes `⌃⌘B`).
+- **Play / media-key tile** — needs a proper `IOHIDPostEvent` bridge to send media keys without triggering the "control your computer" Accessibility prompt. Removed from v0.1 defaults until that ships safely.
+- **Universal binary** (arm64 + x86_64). v0.1 is arm64-only.
+- **XCTest target** — comes back alongside a library-target refactor that needs full Xcode (Command Line Tools doesn't ship XCTest).
+- **Homebrew tap** as a fourth install path.
+
+## Security review (what each default tile actually asks for)
+
+| Tile  | Triggers prompt? | Which prompt |
+|-------|------------------|--------------|
+| Dark  | Yes, once        | "Bento wants permission to control System Events" (Automation) |
+| Mic   | Yes, once        | Same Automation prompt |
+| Lock  | No               | Uses macOS's built-in `CGSession -suspend` |
+| Coffee, Focus | No       | Built-in `caffeinate` |
+| Snap  | No               | Built-in `screencapture` |
+| Notes | No               | Just `open -a Notes` |
+| Sleep | No               | Built-in `pmset displaysleepnow` |
+
+**No default tile triggers the "Bento wants to control your computer" Accessibility prompt.** That prompt comes from sending keystrokes via `osascript ... key code` or similar. If you build a custom tile that does that, expect the prompt — and decide whether you want to grant it.
 
 ## License
 
