@@ -59,6 +59,15 @@ enum DefaultDeck {
                 liveKind: .focus,
                 info: "Start a 25-minute focus session. Mac stays awake, you get a sound + notification when it ends. Pomodoro-style."
             ),
+            Tile(
+                label: "AI",
+                symbol: "sparkles",
+                tint: .accent,
+                // Google AI Mode (udm=50) — opens straight into the AI answer pane,
+                // no permissions needed since it's just a URL open.
+                action: .shell("open 'https://www.google.com/?udm=50'"),
+                info: "Open a fresh Google AI Mode tab in your default browser. Type your question; AI answers inline."
+            ),
         ]
     }
 }

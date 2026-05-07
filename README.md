@@ -87,6 +87,78 @@ bento export > ~/dotfiles/bento-deck.json
 bento import < ~/dotfiles/bento-deck.json
 ```
 
+## Ask an LLM to write a tile for you
+
+Stuck on the shell command for the thing you want? Paste this template into Claude / ChatGPT / Gemini / your favorite assistant:
+
+> I want to add a new tile to **Bento**, a macOS macro app. A Bento "shell" tile runs a single zsh command as my user account on macOS 14+. Please write me one.
+>
+> **What I want the tile to do:** _<plain-English description>_
+>
+> **Constraints:**
+> - One-line shell command preferred; multi-line is fine if necessary
+> - Must work on macOS 14 or later
+> - Avoid commands that trigger the Accessibility "control your computer" prompt (no `osascript ... key code`, no `osascript ... keystroke`)
+> - Automation prompts (System Events, Finder) are acceptable but should be minimal — flag them explicitly
+> - No `sudo` (Bento doesn't elevate privileges)
+> - Prefer built-in macOS commands (`pmset`, `caffeinate`, `screencapture`, `defaults`, `osascript`, `open`, `networksetup`) over third-party tools
+>
+> **Output format — exactly these four lines:**
+>
+> ```
+> Label: <one-word label, fits a tile>
+> Icon:  <suggest an SF Symbol name, e.g. moon.fill / wifi / bolt.fill>
+> Command: <the exact zsh command>
+> Description: <one-sentence tooltip text>
+> ```
+
+### Worked examples
+
+**You ask:** *"a tile that toggles whether the Dock auto-hides"*
+
+**Claude returns** something like:
+
+```
+Label: Dock
+Icon:  dock.rectangle
+Command: defaults write com.apple.dock autohide -bool $([[ $(defaults read com.apple.dock autohide 2>/dev/null) == "1" ]] && echo false || echo true) && killall Dock
+Description: Toggle whether the Dock auto-hides when you mouse away from it.
+```
+
+Paste those four values into Bento → click `+` → fill in Label / Icon / Action: Run a shell command / paste Command into the field / paste Description as the tooltip → Add. Done.
+
+**You ask:** *"a tile that copies my current Wi-Fi password to clipboard"*
+
+**Claude returns** something like:
+
+```
+Label: WiFi
+Icon:  wifi
+Command: security find-generic-password -wa "$(networksetup -getairportnetwork en0 | sed 's/^.*: //')" 2>/dev/null | pbcopy && osascript -e 'display notification "Wi-Fi password copied" with title "Bento"'
+Description: Copy your current Wi-Fi network's password to the clipboard. Triggers the macOS Keychain prompt the first time.
+```
+
+(That second one will pop a Keychain prompt the first time — by design, since Wi-Fi passwords are protected.)
+
+### Other tile ideas worth stealing
+
+| What you want | Roughly how |
+|---|---|
+| Toggle Do Not Disturb | `shortcuts run "Turn Focus On"` (set up a Shortcut named that first) |
+| Switch audio output device | `SwitchAudioSource -s "AirPods Pro"` (install via `brew install switchaudio-osx`) |
+| Open a Slack channel | `open 'slack://channel?team=T0...&id=C0...'` |
+| Show / hide hidden files in Finder | `defaults write com.apple.finder AppleShowAllFiles -bool $([[ $(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null) == "1" ]] && echo false || echo true) && killall Finder` |
+| Restart Finder | `killall Finder` |
+| Empty Downloads folder older than 30 days | `find ~/Downloads -mindepth 1 -mtime +30 -delete` |
+| Open today's calendar | `open -a Calendar` |
+| Quick-add to Things 3 | `open 'things:///add?title=Brain%20dump&when=today'` |
+| Convert clipboard URL to QR code | `qrencode -o /tmp/qr.png "$(pbpaste)" && open /tmp/qr.png` (needs `brew install qrencode`) |
+| Run a pre-saved Hammerspoon function | `hs -c 'doMyThing()'` |
+| Toggle macOS menu bar auto-hide | `defaults write NSGlobalDomain _HIHideMenuBar -bool $([[ $(defaults read NSGlobalDomain _HIHideMenuBar 2>/dev/null) == "1" ]] && echo false || echo true)` |
+| Open the iCloud Drive folder | `open ~/Library/Mobile\ Documents/com~apple~CloudDocs` |
+
+If you build something good, drop the JSON in [`recipes/`](recipes/) and send a PR — fast-merged.
+
 ## Integrations
 
 | Trigger source     | How to fire a tile                                  |
