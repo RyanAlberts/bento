@@ -1,0 +1,12 @@
+{
+  "name": "GitHub status checker",
+  "description": "Quick tile to open GitHub's public status page. Useful when CI is suddenly broken everywhere.",
+  "tiles": [
+    {
+      "label": "GHStat",
+      "symbol": "checkmark.icloud.fill",
+      "tint": "neutral",
+      "action": { "kind": "url", "payload": "https://www.githubstatus.com" }
+    }
+  ]
+}

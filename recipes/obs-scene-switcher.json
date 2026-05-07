@@ -1,0 +1,24 @@
+{
+  "name": "OBS scene switcher",
+  "description": "Tiles that switch the active scene in OBS Studio. Requires obs-cli (https://github.com/leafac/obs-cli) installed and OBS running with WebSocket enabled.",
+  "tiles": [
+    {
+      "label": "Cam",
+      "symbol": "video.fill",
+      "tint": "neutral",
+      "action": { "kind": "shell", "payload": "obs-cli scene 'Camera'" }
+    },
+    {
+      "label": "Screen",
+      "symbol": "rectangle.on.rectangle",
+      "tint": "neutral",
+      "action": { "kind": "shell", "payload": "obs-cli scene 'Screen Share'" }
+    },
+    {
+      "label": "BRB",
+      "symbol": "moon.stars.fill",
+      "tint": "accent",
+      "action": { "kind": "shell", "payload": "obs-cli scene 'BRB'" }
+    }
+  ]
+}

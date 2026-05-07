@@ -1,0 +1,12 @@
+{
+  "name": "Zoom mute toggle",
+  "description": "Sends the system-wide Zoom mute hotkey (⇧⌘A) so you can mute/unmute without raising the Zoom window. Requires Zoom to have its global hotkey enabled in Settings → Keyboard Shortcuts.",
+  "tiles": [
+    {
+      "label": "Zoom",
+      "symbol": "video.bubble.left.fill",
+      "tint": "neutral",
+      "action": { "kind": "shell", "payload": "osascript -e 'tell application \"System Events\" to keystroke \"a\" using {shift down, command down}'" }
+    }
+  ]
+}
