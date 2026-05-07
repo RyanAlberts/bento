@@ -11,11 +11,11 @@ final class MicMonitor: ObservableObject {
     init() {
         // Poll input volume via AppleScript every 2s. Cheaper than CoreAudio listeners for v1.
         timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 await self?.refresh()
             }
         }
-        Task { await refresh() }
+        Task { [weak self] in await self?.refresh() }
     }
 
     private func refresh() async {

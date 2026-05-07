@@ -19,8 +19,10 @@ final class CaffeinateMonitor: ObservableObject {
 
     init() {
         // Tick every second so live ring tiles update smoothly.
+        // Capture self into the inner Task explicitly so Swift 6 strict
+        // concurrency is happy with the mutable-weak-self crossing actor.
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 self?.tick()
             }
         }
