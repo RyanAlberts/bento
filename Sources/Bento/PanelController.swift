@@ -32,8 +32,10 @@ final class PanelController: NSObject, NSWindowDelegate {
     }
 
     private func build() {
-        // Tall enough for 8 default tiles + the "+" tile on a 3rd row + coachmark + title bar.
-        let initialSize = NSSize(width: 360, height: 360)
+        // 28pt title bar + 3 rows of 76pt tiles + 8pt grid spacing × 2 + 12pt grid padding × 2
+        // + ~32pt footer (Help button + coachmark). 420pt gives breathing room so nothing
+        // clips at the bottom on first launch.
+        let initialSize = NSSize(width: 360, height: 420)
         let initialOrigin = NSPoint(x: 200, y: 200)
 
         // Regular Mac window — gets the standard close/minimize/zoom traffic-light buttons,
@@ -53,7 +55,9 @@ final class PanelController: NSObject, NSWindowDelegate {
         window.level = .normal
         window.collectionBehavior = [.fullScreenAuxiliary]  // can show in fullscreen apps' overlay if user wants
         window.delegate = self
-        window.minSize = NSSize(width: 320, height: 280)
+        // Min size enforced so the user can't shrink past where the footer (Help button +
+        // coachmark) would clip. Width allows a slight squeeze for narrower screens.
+        window.minSize = NSSize(width: 340, height: 380)
 
         // Glass material so the panel looks polished, but we no longer pretend to be a HUD.
         let visualEffect = NSVisualEffectView()
