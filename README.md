@@ -1,7 +1,6 @@
 # Bento
 
-A minimal, fun, open-source soft Stream Deck for macOS. No hardware. No subscription. No telemetry.
-
+Create custom, recorded sequences of actions — such as keystrokes, mouse clicks, or application launches — assigned to a single button for automated execution.
 > Press `⌃⌘B` from anywhere — eight tiles appear. Click one — magic happens.
 
 ![Bento screenshot](docs/hero.png)
