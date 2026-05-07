@@ -8,7 +8,7 @@
 >
 > **Bento** — a tiny floating macro grid for macOS power users.
 >
-> Install in one line: `npm install -g bento`
+> Install in one line: `npm install -g bento-deck`
 >
 > Press `⌃⌘B` from anywhere → 8 tiles appear. Click one → magic happens.
 >
@@ -32,7 +32,7 @@
 
 ## First-comment text (post within 60 seconds of publishing, pin it)
 
-> Repo: https://github.com/RyanAlberts/bento — `npm install -g bento` to try it.
+> Repo: https://github.com/RyanAlberts/bento — `npm install -g bento-deck` to try it.
 >
 > A star ⭐ helps a lot; that's how indie projects find new people on GitHub.
 >
@@ -77,7 +77,7 @@ To record the GIF (need to do this manually — autonomous agent can't drive UI)
 
 ### Repo-side SEO (do BEFORE the post)
 
-15. **Repo description** must include "macOS", "Stream Deck", "open source", and "npm" — the search terms people type. Current draft: *"A minimal, fun, open-source soft Stream Deck for macOS. `npm install -g bento`. No hardware, no subscription. Built in SwiftUI."* — covers all four.
+15. **Repo description** must include "macOS", "Stream Deck", "open source", and "npm" — the search terms people type. Current draft: *"A minimal, fun, open-source soft Stream Deck for macOS. `npm install -g bento-deck`. No hardware, no subscription. Built in SwiftUI."* — covers all four.
 16. **Topics:** `macos`, `stream-deck`, `swiftui`, `productivity`, `menubar`, `open-source`, `mac-app`, `npm`. Each topic is a separate GitHub discovery surface.
 17. **Social preview image** at GitHub repo → Settings → Social preview → upload a 1280×640 image of the panel with the project name. Required so the LinkedIn / Twitter preview card looks great instead of generic.
 18. **A "Why" paragraph in the README** above the install section. People who land cold need to know in 3 sentences whether this is for them. The post hook works on LinkedIn; the README "Why" is the conversion step on GitHub.

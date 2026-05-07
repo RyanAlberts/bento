@@ -1,5 +1,5 @@
 {
-  "name": "bento",
+  "name": "bento-deck",
   "version": "0.1.0",
   "description": "A minimal, fun, open-source soft Stream Deck for macOS. No hardware, no subscription. Built in SwiftUI.",
   "homepage": "https://github.com/RyanAlberts/bento",

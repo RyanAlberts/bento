@@ -3,7 +3,7 @@
 A minimal, fun, open-source soft Stream Deck for macOS.
 
 ```
-npm install -g bento
+npm install -g bento-deck
 ```
 
 That installs `Bento.app` to `/Applications` and a `bento` command on your PATH. No Gatekeeper dialog, no hardware, no subscription, no telemetry.

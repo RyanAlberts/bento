@@ -1,6 +1,6 @@
 # `bento` CLI
 
-After `npm install -g bento` or `./scripts/install-cli.sh`, you have a `bento` command on your PATH. It talks to the running app via Distributed Notifications, so the app must be running for `press` and `toggle` to do anything.
+After `npm install -g bento-deck` or `./scripts/install-cli.sh`, you have a `bento` command on your PATH. It talks to the running app via Distributed Notifications, so the app must be running for `press` and `toggle` to do anything.
 
 ## Subcommands
 
