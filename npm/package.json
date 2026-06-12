@@ -11,7 +11,7 @@
     "url": "https://github.com/RyanAlberts/bento/issues"
   },
   "license": "MIT",
-  "author": "Ryan Alberts <25306145+RyanAlberts@users.noreply.github.com>",
+  "author": "Ryan Alberts",
   "os": ["darwin"],
   "engines": {
     "node": ">=18"
